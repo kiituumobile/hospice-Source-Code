@@ -1,0 +1,75 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 12:09:48 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   LoggerManager.java
+
+package com.dts.core.util;
+
+import java.io.File;
+import java.util.logging.*;
+
+public class LoggerManager
+{
+
+    public LoggerManager()
+    {
+    }
+
+    public Logger getLogger(String aFilePath)
+    {
+        String aLogDir = aFilePath.substring(0, aFilePath.lastIndexOf("/"));
+        logger = Logger.getLogger("Logger");
+        try
+        {
+            File aFile = new File(aLogDir);
+            boolean success = aFile.exists();
+            if(!success)
+                success = aFile.mkdir();
+            LogManager lm = LogManager.getLogManager();
+            FileHandler fh = new FileHandler(aFilePath, true);
+            logger = Logger.getLogger("LoggerManager");
+            logger.setUseParentHandlers(false);
+            lm.addLogger(logger);
+            logger.setLevel(Level.INFO);
+            fh.setFormatter(new SimpleFormatter());
+            logger.addHandler(fh);
+        }
+        catch(Exception e)
+        {
+            logger.log(Level.INFO, e.toString(), e.fillInStackTrace());
+        }
+        return logger;
+    }
+
+    public static void writeLogInfo(Exception e)
+    {
+        logger.log(Level.INFO, e.toString(), e.fillInStackTrace());
+    }
+
+    public static void writeLogSevere(Exception e)
+    {
+        logger.log(Level.SEVERE, e.toString(), e.fillInStackTrace());
+    }
+
+    public static void writeLogWarning(Exception e)
+    {
+        logger.log(Level.WARNING, e.toString(), e.fillInStackTrace());
+    }
+
+    public static void writeLogInfo(String info)
+    {
+        logger.log(Level.INFO, info);
+    }
+
+    public static void writeLogSevere(String severe)
+    {
+        logger.log(Level.SEVERE, severe);
+    }
+
+    public static void writeLogWarning(String warning)
+    {
+        logger.log(Level.WARNING, warning);
+    }
+
+    public static Logger logger;
+}

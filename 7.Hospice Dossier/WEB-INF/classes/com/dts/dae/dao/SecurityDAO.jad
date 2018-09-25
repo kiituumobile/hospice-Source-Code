@@ -1,0 +1,344 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 12:11:08 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   SecurityDAO.java
+
+package com.dts.dae.dao;
+
+import com.dts.core.dao.AbstractDataAccessObject;
+import com.dts.core.util.DateWrapper;
+import com.dts.core.util.LoggerManager;
+import com.dts.dae.model.Profile;
+import java.io.PrintStream;
+import java.sql.*;
+import java.util.Date;
+
+public class SecurityDAO extends AbstractDataAccessObject
+{
+
+    public SecurityDAO()
+    {
+        con = getConnection();
+    }
+
+    public boolean checkPassword(Profile regbean)
+    {
+        String loginid = regbean.getLoginID();
+        String oldpassword = regbean.getPassword();
+        try
+        {
+            con.setAutoCommit(true);
+            PreparedStatement pst = con.prepareStatement("select * from logindetails where password=? and loginname=?");
+            pst.setString(1, oldpassword);
+            pst.setString(2, loginid);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next())
+            {
+                flag = true;
+                LoggerManager.writeLogInfo("Login Success");
+            } else
+            {
+                flag = false;
+            }
+            con.close();
+        }
+        catch(SQLException ex)
+        {
+            LoggerManager.writeLogSevere(ex);
+            LoggerManager.writeLogInfo("Database Connection problem");
+            flag = false;
+        }
+        return flag;
+    }
+
+    public int checkFirstLogin(String loginname)
+    {
+        int fstatus = 2;
+        try
+        {
+            con.setAutoCommit(true);
+            PreparedStatement pst = con.prepareStatement("select firstlogin from logindetails where loginname=?");
+            pst.setString(1, loginname);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next())
+                fstatus = rs.getInt(1);
+            con.close();
+        }
+        catch(SQLException ex)
+        {
+            LoggerManager.writeLogSevere(ex);
+            LoggerManager.writeLogInfo("Database Connection problem");
+            flag = false;
+        }
+        return fstatus;
+    }
+
+    public String loginCheck(Profile regbean)
+    {
+        String loginid = regbean.getLoginID();
+        String password = regbean.getPassword();
+        String role = "";
+        System.out.println((new StringBuilder("<<<<<<<<<<<ffff >>>>>>>>>>>")).append(loginid).append("....").append(password).toString());
+        try
+        {
+            System.out.println((new StringBuilder("<<<<<<<<<<<from loginCheck>>>>>>>>>>>")).append(con).toString());
+            con.setAutoCommit(true);
+            System.out.println("<<<<<<<<<<<from >>>>>>>>>>>");
+            PreparedStatement pst = con.prepareStatement("select logintype from logindetails where password=? and loginname=?");
+            pst.setString(2, loginid);
+            pst.setString(1, password);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next())
+            {
+                System.out.println((new StringBuilder("<<<<<<<<<<<>>>>>>>>>>>")).append(rs).toString());
+                role = rs.getString(1);
+                System.out.println((new StringBuilder("<<<<<<<<<<<hhhhhhhhh>>>>>>>>>>>")).append(role).toString());
+                desc = "Login Success";
+            } else
+            {
+                flag = false;
+                desc = "Entered Invalid password";
+            }
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            LoggerManager.writeLogSevere(ex);
+            desc = "Database Connection problem";
+            flag = false;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        loginaudit(loginid, desc);
+        return role;
+    }
+
+    public void loginaudit(String loginid, String desc)
+    {
+        try
+        {
+            String newdate = DateWrapper.parseDate(new Date());
+            PreparedStatement pst = con.prepareStatement("insert into loginaudit values(?,?,?)");
+            pst.setString(1, loginid);
+            pst.setString(2, newdate);
+            pst.setString(3, desc);
+            int i = pst.executeUpdate();
+            if(i == 1)
+                con.commit();
+            else
+                con.rollback();
+            con.close();
+        }
+        catch(Exception e)
+        {
+            try
+            {
+                con.rollback();
+            }
+            catch(SQLException ex)
+            {
+                LoggerManager.writeLogSevere(ex);
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public boolean changePassword(Profile regbean)
+    {
+        String loginid = regbean.getLoginID();
+        String oldpassword = regbean.getPassword();
+        String newpassword = regbean.getNewPassword();
+        try
+        {
+            con.setAutoCommit(false);
+            String newdate = DateWrapper.parseDate(new Date());
+            PreparedStatement pst = con.prepareStatement("UPDATE logindetails SET password=?,passmodifieddate=? WHERE loginname=? and password=?");
+            pst.setString(1, newpassword);
+            pst.setString(2, newdate);
+            pst.setString(3, loginid);
+            pst.setString(4, oldpassword);
+            int i = pst.executeUpdate();
+            if(i == 1)
+            {
+                flag = true;
+                con.commit();
+            } else
+            {
+                flag = false;
+                con.rollback();
+            }
+            con.close();
+        }
+        catch(SQLException ex)
+        {
+            LoggerManager.writeLogSevere(ex);
+            flag = false;
+            try
+            {
+                con.rollback();
+            }
+            catch(SQLException sex)
+            {
+                LoggerManager.writeLogSevere(sex);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            flag = false;
+            try
+            {
+                con.rollback();
+            }
+            catch(SQLException sex)
+            {
+                LoggerManager.writeLogSevere(sex);
+            }
+        }
+        return flag;
+    }
+
+    public boolean changeQuestion(Profile regbean)
+    {
+        String loginid = regbean.getLoginID();
+        String password = regbean.getPassword();
+        int secretquestid = regbean.getSecretQuestionID();
+        String ownsecretquest = regbean.getOwnSecretQuestion();
+        String secretans = regbean.getSecretAnswer();
+        int i = 0;
+        try
+        {
+            con.setAutoCommit(false);
+            if(checkPassword(regbean))
+            {
+                PreparedStatement pst;
+                if(secretquestid == 0)
+                {
+                    Statement st = con.createStatement();
+                    ResultSet rs = st.executeQuery("select (max(questionid))+1 from questionbase");
+                    if(rs.next())
+                        secretquestid = rs.getInt(1);
+                    pst = con.prepareStatement("INSERT INTO question_base VALUES(?,?)");
+                    pst.setInt(1, secretquestid);
+                    pst.setString(2, ownsecretquest);
+                    pst.executeUpdate();
+                }
+                pst = con.prepareStatement("UPDATE logindetails SET squestionid=?,sanswer=? WHERE loginname=? and password=?");
+                pst.setInt(1, secretquestid);
+                pst.setString(2, secretans);
+                pst.setString(3, loginid);
+                pst.setString(4, password);
+                i = pst.executeUpdate();
+                if(i == 1)
+                {
+                    flag = true;
+                    con.commit();
+                } else
+                {
+                    flag = false;
+                    con.rollback();
+                }
+            }
+            con.close();
+        }
+        catch(SQLException ex)
+        {
+            LoggerManager.writeLogSevere(ex);
+            flag = false;
+            try
+            {
+                con.rollback();
+            }
+            catch(SQLException sex)
+            {
+                LoggerManager.writeLogSevere(sex);
+            }
+        }
+        catch(Exception e)
+        {
+            LoggerManager.writeLogSevere(e);
+            flag = false;
+            try
+            {
+                con.rollback();
+            }
+            catch(SQLException sex)
+            {
+                LoggerManager.writeLogSevere(sex);
+            }
+        }
+        return flag;
+    }
+
+    public String recoverPasswordByExistQuestion(Profile regbean)
+    {
+        String loginid = regbean.getLoginID();
+        int secretquestid = regbean.getSecretQuestionID();
+        String secretans = regbean.getSecretAnswer();
+        String password;
+        try
+        {
+            con.setAutoCommit(true);
+            PreparedStatement pst = con.prepareStatement("SELECT password FROM logindetails  WHERE loginname=? and squestionid=? and sanswer=?");
+            pst.setString(1, loginid);
+            pst.setInt(2, secretquestid);
+            pst.setString(3, secretans);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next())
+                password = rs.getString(1);
+            else
+                password = "";
+            con.close();
+        }
+        catch(SQLException ex)
+        {
+            LoggerManager.writeLogSevere(ex);
+            password = "";
+        }
+        catch(Exception e)
+        {
+            LoggerManager.writeLogSevere(e);
+            password = "";
+        }
+        return password;
+    }
+
+    public String recoverPasswordByOWNQuestion(Profile regbean)
+    {
+        String loginid = regbean.getLoginID();
+        String ownsecretquest = regbean.getOwnSecretQuestion();
+        String secretans = regbean.getSecretAnswer();
+        String password;
+        try
+        {
+            con.setAutoCommit(true);
+            PreparedStatement pst = con.prepareStatement("SELECT password FROM logindetails  WHERE loginname=? and squestionid=(select questionid from questionbase where questiondetails=?) and sanswer=?");
+            pst.setString(1, loginid);
+            pst.setString(2, ownsecretquest);
+            pst.setString(3, secretans);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next())
+                password = rs.getString(1);
+            else
+                password = "";
+            con.close();
+        }
+        catch(SQLException ex)
+        {
+            LoggerManager.writeLogSevere(ex);
+            password = "";
+        }
+        catch(Exception e)
+        {
+            LoggerManager.writeLogSevere(e);
+            password = "";
+        }
+        return password;
+    }
+
+    Connection con;
+    private String desc;
+    private boolean flag;
+}

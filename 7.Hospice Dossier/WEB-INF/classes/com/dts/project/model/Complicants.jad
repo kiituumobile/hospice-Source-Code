@@ -1,0 +1,106 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 2:35:59 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   Complicants.java
+
+package com.dts.project.model;
+
+import com.dts.core.model.AbstractDataObject;
+import java.sql.Date;
+
+public class Complicants extends AbstractDataObject
+{
+
+    public Complicants()
+    {
+    }
+
+    public String getLoginname()
+    {
+        return loginname;
+    }
+
+    public void setLoginname(String loginname)
+    {
+        this.loginname = loginname;
+    }
+
+    public String getComplication()
+    {
+        return complication;
+    }
+
+    public void setComplication(String complication)
+    {
+        this.complication = complication;
+    }
+
+    public String getRegdate()
+    {
+        return regdate;
+    }
+
+    public void setRegdate(String regdate)
+    {
+        this.regdate = regdate;
+    }
+
+    public Date getRegdate1()
+    {
+        return regdate1;
+    }
+
+    public void setRegdate1(Date regdate1)
+    {
+        this.regdate1 = regdate1;
+    }
+
+    public String getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(String status)
+    {
+        this.status = status;
+    }
+
+    public String getDateofavailablity()
+    {
+        return dateofavailablity;
+    }
+
+    public void setDateofavailablity(String dateofavailablity)
+    {
+        this.dateofavailablity = dateofavailablity;
+    }
+
+    public Date getDateofavailablity1()
+    {
+        return dateofavailablity1;
+    }
+
+    public void setDateofavailablity1(Date dateofavailablity1)
+    {
+        this.dateofavailablity1 = dateofavailablity1;
+    }
+
+    public String getTimings()
+    {
+        return timings;
+    }
+
+    public void setTimings(String timings)
+    {
+        this.timings = timings;
+    }
+
+    private String loginname;
+    private String complication;
+    private String regdate;
+    private Date regdate1;
+    private String status;
+    private String dateofavailablity;
+    private Date dateofavailablity1;
+    private String timings;
+}

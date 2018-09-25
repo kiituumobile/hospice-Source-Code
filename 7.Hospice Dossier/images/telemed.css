@@ -1,0 +1,78 @@
+.index {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	color: #0066FF;
+}
+.linksheader {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 35px;
+	color: #FFFFFF;
+	font-style: normal;
+}
+.linkstitle {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #0000FF;
+	line-height: 30px;
+}
+.linkurl {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+.bodytext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 18px;
+}
+.navOn {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #0000FF;
+	line-height: normal;
+}
+.nav {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #0000FF;
+	line-height: normal;
+	display: list-item;
+}
+.nav2Line {
+
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #0000FF;
+	line-height: normal;
+}
+.telemedicinecom {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 18px;
+	color: #0033FF;
+	font-weight: bold;
+}
+.mission {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #0033CC;
+	font-weight: bold;
+}
+.bodyHeader {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #0000FF;
+}
+.smallBody {
+	font-size: 12px;
+	font-weight: lighter;
+}

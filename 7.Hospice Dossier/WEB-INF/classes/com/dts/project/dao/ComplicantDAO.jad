@@ -1,0 +1,264 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 2:28:10 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   ComplicantDAO.java
+
+package com.dts.project.dao;
+
+import com.dts.core.dao.AbstractDataAccessObject;
+import com.dts.core.util.CoreHash;
+import com.dts.project.model.Complicants;
+import java.io.PrintStream;
+import java.sql.*;
+
+public class ComplicantDAO extends AbstractDataAccessObject
+{
+
+    public ComplicantDAO()
+    {
+        con = null;
+    }
+
+    public boolean addComplicants(Complicants acomplicants)
+    {
+        boolean flag;
+        PreparedStatement pstComplicants;
+        flag = false;
+        pstComplicants = null;
+        boolean flag1;
+        con = getConnection();
+        String insertsql = "insert into Complicants values(?,?,?,?,?,?)";
+        pstComplicants = con.prepareStatement(insertsql);
+        pstComplicants.setString(1, acomplicants.getLoginname());
+        pstComplicants.setString(2, acomplicants.getComplication());
+        pstComplicants.setString(3, acomplicants.getRegdate());
+        pstComplicants.setString(4, acomplicants.getStatus());
+        pstComplicants.setString(5, acomplicants.getDateofavailablity());
+        System.out.println((new StringBuilder("acomplicants.getDateofavailablity1()")).append(acomplicants.getDateofavailablity1()).toString());
+        pstComplicants.setString(6, acomplicants.getTimings());
+        System.out.println(pstComplicants);
+        int n = pstComplicants.executeUpdate();
+        if(n > 0)
+            flag = true;
+        flag1 = flag;
+        try
+        {
+            pstComplicants.close();
+            con.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return flag1;
+        Exception e;
+        e;
+        System.out.println((new StringBuilder("e.getMessage():")).append(e.getMessage()).toString());
+        e.printStackTrace();
+        try
+        {
+            pstComplicants.close();
+            con.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        break MISSING_BLOCK_LABEL_282;
+        Exception exception;
+        exception;
+        try
+        {
+            pstComplicants.close();
+            con.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        throw exception;
+        return flag;
+    }
+
+    public CoreHash viewComplicants(String loginname)
+    {
+        CoreHash acorehash;
+label0:
+        {
+            acorehash = new CoreHash();
+            Statement st = null;
+            CoreHash corehash;
+            try
+            {
+                con = getConnection();
+                String selectsql = (new StringBuilder("select * from Complicants where  patientname='")).append(loginname).append("'").toString();
+                st = con.createStatement();
+                ResultSet rs = st.executeQuery(selectsql);
+                Complicants acomplicant = null;
+                for(int i = 0; rs.next(); i++)
+                {
+                    acomplicant = new Complicants();
+                    acomplicant.setLoginname(rs.getString(1));
+                    acomplicant.setComplication(rs.getString(2));
+                    acomplicant.setRegdate(rs.getString(3));
+                    acomplicant.setStatus(rs.getString(4));
+                    acomplicant.setDateofavailablity1(rs.getDate(5));
+                    acomplicant.setTimings(rs.getString(6));
+                    acorehash.put(new Integer(i), acomplicant);
+                }
+
+                corehash = acorehash;
+            }
+            catch(Exception exception)
+            {
+                try
+                {
+                    st.close();
+                    con.close();
+                }
+                catch(Exception exception3) { }
+                break label0;
+            }
+            finally
+            {
+                try
+                {
+                    st.close();
+                    con.close();
+                }
+                catch(Exception exception4) { }
+                throw exception1;
+            }
+            try
+            {
+                st.close();
+                con.close();
+            }
+            catch(Exception exception2) { }
+            return corehash;
+        }
+        return acorehash;
+    }
+
+    public CoreHash viewOneComplicants(String loginname, String adate)
+    {
+        CoreHash acorehash;
+label0:
+        {
+            acorehash = new CoreHash();
+            Statement st = null;
+            CoreHash corehash;
+            try
+            {
+                con = getConnection();
+                String selectsql = (new StringBuilder("select * from Complicants where  patientname='")).append(loginname).append("' and DateOfAvailablity=#").append(adate).append("#").toString();
+                st = con.createStatement();
+                ResultSet rs = st.executeQuery(selectsql);
+                Complicants acomplicant = null;
+                for(int i = 0; rs.next(); i++)
+                {
+                    acomplicant = new Complicants();
+                    acomplicant.setLoginname(rs.getString(1));
+                    acomplicant.setComplication(rs.getString(2));
+                    acomplicant.setRegdate(rs.getString(3));
+                    acomplicant.setStatus(rs.getString(4));
+                    acomplicant.setDateofavailablity1(rs.getDate(5));
+                    acomplicant.setTimings(rs.getString(6));
+                    acorehash.put(new Integer(i), acomplicant);
+                }
+
+                corehash = acorehash;
+            }
+            catch(Exception exception)
+            {
+                try
+                {
+                    st.close();
+                    con.close();
+                }
+                catch(Exception exception3) { }
+                break label0;
+            }
+            finally
+            {
+                try
+                {
+                    st.close();
+                    con.close();
+                }
+                catch(Exception exception4) { }
+                throw exception1;
+            }
+            try
+            {
+                st.close();
+                con.close();
+            }
+            catch(Exception exception2) { }
+            return corehash;
+        }
+        return acorehash;
+    }
+
+    public CoreHash viewAllComplicants()
+    {
+        CoreHash acorehash;
+label0:
+        {
+            acorehash = new CoreHash();
+            Statement st = null;
+            CoreHash corehash;
+            try
+            {
+                con = getConnection();
+                String selectsql = "select * from Complicants";
+                st = con.createStatement();
+                ResultSet rs = st.executeQuery(selectsql);
+                Complicants acomplicant = null;
+                for(int i = 0; rs.next(); i++)
+                {
+                    acomplicant = new Complicants();
+                    acomplicant.setLoginname(rs.getString(1));
+                    acomplicant.setComplication(rs.getString(2));
+                    acomplicant.setRegdate(rs.getString(3));
+                    acomplicant.setStatus(rs.getString(4));
+                    acomplicant.setDateofavailablity1(rs.getDate(5));
+                    acomplicant.setTimings(rs.getString(6));
+                    acorehash.put(new Integer(i), acomplicant);
+                }
+
+                corehash = acorehash;
+            }
+            catch(Exception exception)
+            {
+                try
+                {
+                    st.close();
+                    con.close();
+                }
+                catch(Exception exception3) { }
+                break label0;
+            }
+            finally
+            {
+                try
+                {
+                    st.close();
+                    con.close();
+                }
+                catch(Exception exception4) { }
+                throw exception1;
+            }
+            try
+            {
+                st.close();
+                con.close();
+            }
+            catch(Exception exception2) { }
+            return corehash;
+        }
+        return acorehash;
+    }
+
+    public Connection con;
+}

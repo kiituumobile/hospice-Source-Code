@@ -1,0 +1,330 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 12:12:41 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   ReportDAO.java
+
+package com.dts.project.dao;
+
+import com.dts.core.dao.AbstractDataAccessObject;
+import com.dts.core.util.CoreHash;
+import com.dts.core.util.DateWrapper;
+import com.dts.project.model.Reports;
+import java.io.PrintStream;
+import java.sql.*;
+
+public class ReportDAO extends AbstractDataAccessObject
+{
+
+    public ReportDAO()
+    {
+    }
+
+    public boolean addReports(Reports areports)
+    {
+        Connection con;
+        boolean flag;
+        PreparedStatement pstreports;
+        con = null;
+        flag = false;
+        pstreports = null;
+        boolean flag1;
+        con = getConnection();
+        String insertsql = "insert into Reports values(?,?,?,?,?,?,?,?,?)";
+        pstreports = con.prepareStatement(insertsql);
+        pstreports.setString(1, areports.getLoginname());
+        pstreports.setString(2, areports.getDoctorname());
+        pstreports.setString(3, areports.getLocation());
+        pstreports.setString(4, areports.getSpeciliazation());
+        pstreports.setString(5, areports.getBp());
+        pstreports.setString(6, areports.getSugar());
+        pstreports.setString(7, areports.getComplication());
+        pstreports.setString(8, areports.getPrescription());
+        pstreports.setString(9, DateWrapper.parseDate(areports.getDateoflastrecord()));
+        int n = pstreports.executeUpdate();
+        if(n > 0)
+            flag = true;
+        flag1 = flag;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return flag1;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_232;
+        Exception exception;
+        exception;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return flag;
+    }
+
+    public CoreHash viewReports()
+    {
+        Connection con;
+        CoreHash acorehash;
+        PreparedStatement pstreports;
+        con = null;
+        acorehash = null;
+        pstreports = null;
+        CoreHash corehash;
+        con = getConnection();
+        String selectsql = "Select * from Reports ";
+        pstreports = con.prepareStatement(selectsql);
+        ResultSet rs = pstreports.executeQuery();
+        int i = 0;
+        Reports areports = null;
+        while(rs.next()) 
+        {
+            areports = new Reports();
+            areports.setLoginname(rs.getString(1));
+            areports.setDoctorname(rs.getString(2));
+            areports.setLocation(rs.getString(3));
+            areports.setSpeciliazation(rs.getString(4));
+            areports.setBp(rs.getString(5));
+            areports.setSugar(rs.getString(6));
+            areports.setComplication(rs.getString(7));
+            areports.setPrescription(rs.getString(8));
+            areports.setDateoflastrecord(rs.getString(9));
+            acorehash.put(new Integer(i), areports);
+            i++;
+        }
+        corehash = acorehash;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return corehash;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_272;
+        Exception exception;
+        exception;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return acorehash;
+    }
+
+    public CoreHash viewPatientReports(String loginname)
+    {
+        Connection con;
+        CoreHash acorehash;
+        PreparedStatement pstreports;
+        con = null;
+        acorehash = new CoreHash();
+        pstreports = null;
+        CoreHash corehash;
+        con = getConnection();
+        String selectsql = (new StringBuilder("Select * from Reports where loginname='")).append(loginname).append("'").toString();
+        pstreports = con.prepareStatement(selectsql);
+        ResultSet rs = pstreports.executeQuery();
+        int i = 0;
+        Reports areports = null;
+        while(rs.next()) 
+        {
+            areports = new Reports();
+            areports.setLoginname(rs.getString(1));
+            areports.setDoctorname(rs.getString(2));
+            areports.setLocation(rs.getString(3));
+            areports.setSpeciliazation(rs.getString(4));
+            areports.setBp(rs.getString(5));
+            areports.setSugar(rs.getString(6));
+            areports.setComplication(rs.getString(7));
+            areports.setPrescription(rs.getString(8));
+            areports.setDateoflastrecord(rs.getString(9));
+            acorehash.put(new Integer(i), areports);
+            i++;
+        }
+        corehash = acorehash;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return corehash;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_303;
+        Exception exception;
+        exception;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return acorehash;
+    }
+
+    public boolean deleteReports(String lastrecord)
+    {
+        boolean flag;
+        flag = false;
+        PreparedStatement pstreports = null;
+        Connection con = null;
+        Connection con = getConnection();
+        String deletesql = "delete from reports where DateOfLastReport=?";
+        PreparedStatement pstreports = con.prepareStatement(deletesql);
+        pstreports.setString(1, lastrecord);
+        int n = pstreports.executeUpdate();
+        if(n > 0)
+            flag = true;
+        return flag;
+        Exception e;
+        e;
+        e.printStackTrace();
+        return flag;
+    }
+
+    public boolean updateReports(Reports areports)
+    {
+        boolean flag;
+        PreparedStatement pstreports;
+        Connection con;
+        flag = false;
+        pstreports = null;
+        con = null;
+        boolean flag1;
+        con = getConnection();
+        String updatesql = "update Reports set DoctorName=?,Location=?,Speciliagation=?,BP=?,Sugar=?,complication=?,prescription=? where loginname=? and DateOfLastReport=?";
+        pstreports = con.prepareStatement(updatesql);
+        pstreports.setString(1, areports.getDoctorname());
+        pstreports.setString(2, areports.getLocation());
+        pstreports.setString(3, areports.getSpeciliazation());
+        pstreports.setString(4, areports.getBp());
+        pstreports.setString(5, areports.getSugar());
+        pstreports.setString(6, areports.getComplication());
+        pstreports.setString(7, areports.getPrescription());
+        pstreports.setString(8, areports.getLoginname());
+        pstreports.setString(9, areports.getDateoflastrecord());
+        int n = pstreports.executeUpdate();
+        if(n > 0)
+            flag = true;
+        flag1 = flag;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return flag1;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_220;
+        Exception exception;
+        exception;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return flag;
+    }
+
+    public CoreHash viewLastReports(String loginname, String lastrecord)
+    {
+        Connection con;
+        CoreHash acorehash;
+        PreparedStatement pstreports;
+        con = null;
+        acorehash = new CoreHash();
+        pstreports = null;
+        CoreHash corehash;
+        con = getConnection();
+        String selectsql = (new StringBuilder("Select * from Reports where loginname='")).append(loginname).append("' and DateOfLastReport='").append(lastrecord).append("'").toString();
+        System.out.println((new StringBuilder("selectsql")).append(selectsql).toString());
+        pstreports = con.prepareStatement(selectsql);
+        ResultSet rs = pstreports.executeQuery();
+        int i = 0;
+        Reports areports = null;
+        while(rs.next()) 
+        {
+            areports = new Reports();
+            areports.setLoginname(rs.getString(1));
+            areports.setDoctorname(rs.getString(2));
+            areports.setLocation(rs.getString(3));
+            areports.setSpeciliazation(rs.getString(4));
+            areports.setBp(rs.getString(5));
+            areports.setSugar(rs.getString(6));
+            areports.setComplication(rs.getString(7));
+            areports.setPrescription(rs.getString(8));
+            areports.setDateoflastrecord(rs.getString(9));
+            acorehash.put(new Integer(i), areports);
+            i++;
+        }
+        corehash = acorehash;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return corehash;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_338;
+        Exception exception;
+        exception;
+        try
+        {
+            pstreports.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return acorehash;
+    }
+}

@@ -1,0 +1,54 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 12:09:42 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   InitServlet.java
+
+package com.dts.core.util;
+
+import com.dts.core.dao.AbstractDataAccessObject;
+import com.dts.core.db.DBFactory;
+import java.io.IOException;
+import java.util.Properties;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
+
+// Referenced classes of package com.dts.core.util:
+//            LoggerManager
+
+public class InitServlet extends HttpServlet
+{
+
+    public InitServlet()
+    {
+    }
+
+    public void init(ServletConfig sc)
+    {
+        ServletContext ctx = sc.getServletContext();
+        java.io.InputStream fis = ctx.getResourceAsStream(sc.getInitParameter("config"));
+        Properties props = new Properties();
+        try
+        {
+            props.load(fis);
+        }
+        catch(IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        dobject = new AbstractDataAccessObject();
+        dobject.setProperties(props);
+        LoggerManager.logger = (new LoggerManager()).getLogger(props.getProperty("logfile"));
+        LoggerManager.writeLogInfo("Logger Instantiated");
+        try
+        {
+            new DBFactory();
+        }
+        catch(NullPointerException npe)
+        {
+            LoggerManager.writeLogWarning("Connection to database FAILED");
+        }
+    }
+
+    AbstractDataAccessObject dobject;
+}

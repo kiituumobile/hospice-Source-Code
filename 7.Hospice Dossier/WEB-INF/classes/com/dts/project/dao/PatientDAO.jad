@@ -1,0 +1,257 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 2:30:17 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   PatientDAO.java
+
+package com.dts.project.dao;
+
+import com.dts.core.dao.AbstractDataAccessObject;
+import com.dts.core.util.CoreHash;
+import com.dts.core.util.DateWrapper;
+import com.dts.project.model.Patient;
+import java.sql.*;
+import java.util.Date;
+
+public class PatientDAO extends AbstractDataAccessObject
+{
+
+    public PatientDAO()
+    {
+    }
+
+    public boolean addPatient(Patient apatient)
+    {
+        boolean flag;
+        PreparedStatement pstpatient;
+        Connection con;
+        flag = false;
+        pstpatient = null;
+        con = null;
+        boolean flag1;
+        con = getConnection();
+        String insertsql = "insert into patient values(?,?,?,?,?,?,?,?)";
+        pstpatient = con.prepareStatement(insertsql);
+        pstpatient.setString(1, apatient.getLoginname());
+        pstpatient.setString(2, apatient.getAge());
+        pstpatient.setString(3, apatient.getHeight());
+        pstpatient.setString(4, apatient.getWeight());
+        pstpatient.setString(5, apatient.getBloodgroup());
+        pstpatient.setString(6, apatient.getBp());
+        pstpatient.setString(7, apatient.getSugar());
+        pstpatient.setString(8, DateWrapper.parseDate(new Date()));
+        int n = pstpatient.executeUpdate();
+        if(n > 0)
+            flag = true;
+        flag1 = flag;
+        try
+        {
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return flag1;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_214;
+        Exception exception;
+        exception;
+        try
+        {
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return flag;
+    }
+
+    public boolean updatePatient(Patient apatient)
+    {
+        boolean flag;
+        PreparedStatement pstpatient;
+        Connection con;
+        flag = false;
+        pstpatient = null;
+        con = null;
+        boolean flag1;
+        con = getConnection();
+        String updatesql = "update patient set age=?,height=?,weight=?,bloodgroup=?,bp=?,sugar=?,regdate=? where loginname=?";
+        pstpatient = con.prepareStatement(updatesql);
+        pstpatient.setString(8, apatient.getLoginname());
+        pstpatient.setString(1, apatient.getAge());
+        pstpatient.setString(2, apatient.getHeight());
+        pstpatient.setString(3, apatient.getWeight());
+        pstpatient.setString(4, apatient.getBloodgroup());
+        pstpatient.setString(5, apatient.getBp());
+        pstpatient.setString(6, apatient.getSugar());
+        pstpatient.setString(7, DateWrapper.parseDate(new Date()));
+        int n = pstpatient.executeUpdate();
+        if(n > 0)
+            flag = true;
+        flag1 = flag;
+        try
+        {
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return flag1;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_214;
+        Exception exception;
+        exception;
+        try
+        {
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return flag;
+    }
+
+    public CoreHash viewPatientDetails(String loginname)
+    {
+        CoreHash acorehash;
+        PreparedStatement pstpatient;
+        Connection con;
+        ResultSet rs;
+        acorehash = new CoreHash();
+        pstpatient = null;
+        con = null;
+        rs = null;
+        CoreHash corehash;
+        con = getConnection();
+        String selectsql = "select * from patient where loginname=?";
+        pstpatient = con.prepareStatement(selectsql);
+        pstpatient.setString(1, loginname);
+        rs = pstpatient.executeQuery();
+        Patient apatient = null;
+        for(int i = 0; rs.next(); i++)
+        {
+            apatient = new Patient();
+            apatient.setLoginname(rs.getString(1));
+            apatient.setAge(rs.getString(2));
+            apatient.setHeight(rs.getString(3));
+            apatient.setWeight(rs.getString(4));
+            apatient.setBloodgroup(rs.getString(5));
+            apatient.setBp(rs.getString(6));
+            apatient.setSugar(rs.getString(7));
+            apatient.setRegdate1(rs.getDate(8));
+            acorehash.put(new Integer(i), apatient);
+        }
+
+        corehash = acorehash;
+        try
+        {
+            rs.close();
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return corehash;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            rs.close();
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_302;
+        Exception exception;
+        exception;
+        try
+        {
+            rs.close();
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return acorehash;
+    }
+
+    public CoreHash viewAllPatientDetails()
+    {
+        CoreHash acorehash;
+        PreparedStatement pstpatient;
+        Connection con;
+        ResultSet rs;
+        acorehash = new CoreHash();
+        pstpatient = null;
+        con = null;
+        rs = null;
+        CoreHash corehash;
+        con = getConnection();
+        String selectsql = "select * from patient";
+        pstpatient = con.prepareStatement(selectsql);
+        rs = pstpatient.executeQuery();
+        Patient apatient = null;
+        for(int i = 0; rs.next(); i++)
+        {
+            apatient = new Patient();
+            apatient.setLoginname(rs.getString(1));
+            apatient.setAge(rs.getString(2));
+            apatient.setHeight(rs.getString(3));
+            apatient.setWeight(rs.getString(4));
+            apatient.setBloodgroup(rs.getString(5));
+            apatient.setBp(rs.getString(6));
+            apatient.setSugar(rs.getString(7));
+            apatient.setRegdate1(rs.getDate(8));
+            acorehash.put(new Integer(i), apatient);
+        }
+
+        corehash = acorehash;
+        try
+        {
+            rs.close();
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return corehash;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            rs.close();
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_288;
+        Exception exception;
+        exception;
+        try
+        {
+            rs.close();
+            pstpatient.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return acorehash;
+    }
+
+    Connection con;
+    Patient sample;
+}

@@ -1,0 +1,45 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 12:09:31 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   DateWrapper.java
+
+package com.dts.core.util;
+
+import java.io.PrintStream;
+import java.util.Date;
+
+public class DateWrapper
+{
+
+    public DateWrapper()
+    {
+    }
+
+    public static String parseDate(Date date)
+    {
+        int monthid = date.getMonth();
+        String newdate = (new StringBuilder(String.valueOf(date.getDate()))).append("-").append(month[monthid]).append("-").append(date.getYear() + 1900).toString();
+        System.out.println((new StringBuilder("new date==")).append(newdate).toString());
+        return newdate;
+    }
+
+    public static String parseDate(String date)
+    {
+        int monthid = Integer.parseInt(date.substring(date.indexOf("-") + 1, date.lastIndexOf("-")));
+        String newdate = (new StringBuilder(String.valueOf(date.substring(0, date.indexOf("-"))))).append("-").append(month[monthid - 1]).append("-").append(date.substring(date.lastIndexOf("-") + 1, date.length())).toString();
+        return newdate;
+    }
+
+    public static String parseDate(java.sql.Date date)
+    {
+        String olddate = date.toString();
+        String newdate = (new StringBuilder(String.valueOf(olddate.substring(olddate.lastIndexOf("-") + 1, olddate.length())))).append("-").append(olddate.substring(olddate.indexOf("-") + 1, olddate.lastIndexOf("-"))).append("-").append(olddate.substring(0, olddate.indexOf("-"))).toString();
+        return newdate;
+    }
+
+    static String month[] = {
+        "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+        "NOV", "DEC"
+    };
+
+}

@@ -1,0 +1,168 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 12:12:53 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   TeleDAO.java
+
+package com.dts.project.dao;
+
+import com.dts.core.dao.AbstractDataAccessObject;
+import com.dts.core.util.CoreHash;
+import com.dts.project.model.TeleCenters;
+import java.sql.*;
+
+public class TeleDAO extends AbstractDataAccessObject
+{
+
+    public TeleDAO()
+    {
+        con = null;
+    }
+
+    public boolean addTeleCenters(TeleCenters atelecenters)
+    {
+        boolean flag;
+        PreparedStatement psttelecenters;
+        flag = false;
+        psttelecenters = null;
+        boolean flag1;
+        con = getConnection();
+        String insertsql = "insert into TeleMedicieneCenters values(?,?,?,?,?)";
+        psttelecenters = con.prepareStatement(insertsql);
+        psttelecenters.setString(1, atelecenters.getCountry());
+        psttelecenters.setString(2, atelecenters.getState());
+        psttelecenters.setString(3, atelecenters.getCity());
+        psttelecenters.setString(4, atelecenters.getContactperson());
+        psttelecenters.setString(5, atelecenters.getContactno());
+        int n = psttelecenters.executeUpdate();
+        if(n > 0)
+            flag = true;
+        flag1 = flag;
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return flag1;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_179;
+        Exception exception;
+        exception;
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return flag;
+    }
+
+    public CoreHash viewTeleCenters()
+    {
+        CoreHash acorehash;
+        Statement psttelecenters;
+        acorehash = new CoreHash();
+        psttelecenters = null;
+        CoreHash corehash;
+        con = getConnection();
+        String selectsql = "Select * from TeleMedicieneCenters";
+        psttelecenters = con.createStatement();
+        ResultSet rs = psttelecenters.executeQuery(selectsql);
+        int i = 0;
+        TeleCenters atelecenters = null;
+        while(rs.next()) 
+        {
+            atelecenters = new TeleCenters();
+            atelecenters.setCountry(rs.getString(1));
+            atelecenters.setState(rs.getString(2));
+            atelecenters.setCity(rs.getString(3));
+            atelecenters.setContactperson(rs.getString(4));
+            atelecenters.setContactno(rs.getString(5));
+            acorehash.put(new Integer(i), atelecenters);
+            i++;
+        }
+        corehash = acorehash;
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return corehash;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_231;
+        Exception exception;
+        exception;
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return acorehash;
+    }
+
+    public boolean deleteTelecenters(String contactperson)
+    {
+        boolean flag;
+        PreparedStatement psttelecenters;
+        flag = false;
+        psttelecenters = null;
+        boolean flag1;
+        con = getConnection();
+        String deletesql = "delete from TeleMedicieneCenters where ContactPerson=?";
+        psttelecenters = con.prepareStatement(deletesql);
+        psttelecenters.setString(1, contactperson);
+        int n = psttelecenters.executeUpdate();
+        if(n > 0)
+            flag = true;
+        flag1 = flag;
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return flag1;
+        Exception e;
+        e;
+        e.printStackTrace();
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_132;
+        Exception exception;
+        exception;
+        try
+        {
+            psttelecenters.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return flag;
+    }
+
+    public Connection con;
+}

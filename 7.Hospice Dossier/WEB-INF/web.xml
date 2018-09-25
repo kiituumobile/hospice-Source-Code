@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<servlet>
+		<description>
+			This is the description of my J2EE component
+		</description>
+		<display-name>
+			This is the display name of my J2EE component
+		</display-name>
+		
+		<servlet-name>InitServlet</servlet-name>
+		<servlet-class>com.dts.core.util.InitServlet</servlet-class>
+
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/config/system.properties</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>InitServlet</servlet-name>
+		<url-pattern>/initservlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Framework Controller Configuration -->
+	<servlet>
+		<servlet-name>DispatchController</servlet-name>
+		<servlet-class>com.dts.core.control.DispatchController</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ExportController</servlet-name>
+		<servlet-class>com.dts.core.control.ExportController</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ReportController</servlet-name>
+		<servlet-class>com.dts.core.control.ReportController</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>UIController</servlet-name>
+		<servlet-class>com.dts.core.control.UIController</servlet-class>
+	</servlet>
+	
+	<!-- Framework Controller Mapping -->
+	<servlet-mapping>
+		<servlet-name>DispatchController</servlet-name>
+		<url-pattern>/DispatchController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ExportController</servlet-name>
+		<url-pattern>/ExportController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ReportController</servlet-name>
+		<url-pattern>/ReportController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UIController</servlet-name>
+		<url-pattern>/UIController</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Supported Export Modes of ExportController  -->
+	<servlet>
+		<servlet-name>ExportPDF</servlet-name>
+		<servlet-class>com.dts.core.export.ExportPDF</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ExportTXT</servlet-name>
+		<servlet-class>com.dts.core.export.ExportTXT</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ExportXLS</servlet-name>
+		<servlet-class>com.dts.core.export.ExportXLS</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ExportPDF</servlet-name>
+		<url-pattern>/ExportPDF</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ExportTXT</servlet-name>
+		<url-pattern>/ExportTXT</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ExportXLS</servlet-name>
+		<url-pattern>/ExportXLS</url-pattern>
+	</servlet-mapping>
+	
+	
+	<display-name>Chat Application</display-name>
+	<description>This is a small chat Application created using JSP and Servlets</description>
+
+	<context-param>
+		<param-name>chatpropertyfile</param-name>
+		<!--  Name of the chat properties file. It contains the name and description of rooms.
+		-->		
+		<param-value>chat.properties</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>saveRooms</param-name>
+		<!-- The value of saveRooms can be set to true or false.
+		If true then all new rooms added by users will be saved in chat.properties files.
+		Default is false.
+		-->		
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>adminEmail</param-name>
+		<!-- Add an e-mail address of the administrator of this web site. -->
+		<param-value>admin@website.com</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>sessionTimeout</param-name>
+		<!-- Add time in minutes after which user's session will be expired.
+		If user doesn't make any request after provided minutes he will be automatically logged out.
+		Default is 30 minutes.
+
+		-->
+		<param-value>30</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>refreshAfter</param-name>
+		<!-- Add time in seconds after which user's browser window will automatically refresh to display
+		new messages.
+		Default is 10 seconds.
+		-->
+		<param-value>10</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>maxNoOfMessages</param-name>
+		<!--  Maximum Number of messages that are stored in a list which is used to store all messages
+		in a room. After this limit is reached older messages are removed.
+		Default is 25
+		-->		
+		<param-value>25</param-value>
+	</context-param>
+
+	<!-- This is servlet 2.3 specific feature. It is used to remove a automactically
+	user when his session expires. Without it sessions will expire but users' name will
+	not be removed from list of all Chatters currently chatting.-->
+	<listener>
+		<listener-class>sukhwinder.chat.SessionListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>login</servlet-name>
+		<servlet-class>sukhwinder.chat.servlet.LoginServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>doctorlogin</servlet-name>
+		<servlet-class>sukhwinder.chat.servlet.DoctorLoginServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>manageChat</servlet-name>
+		<servlet-class>sukhwinder.chat.servlet.ManageChatServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>saveInfo</servlet-name>
+		<servlet-class>sukhwinder.chat.servlet.SaveInfoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>manageChat</servlet-name>
+		<url-pattern>/servlet/manageChat</url-pattern>
+
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>login</servlet-name>
+		<url-pattern>/servlet/login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>doctorlogin</servlet-name>
+		<url-pattern>/servlet/doctorlogin</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>saveInfo</servlet-name>
+		<url-pattern>/servlet/saveInfo</url-pattern>
+	</servlet-mapping>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error.jsp</location>
+	</error-page>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

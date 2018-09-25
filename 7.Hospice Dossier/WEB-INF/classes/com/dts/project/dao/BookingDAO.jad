@@ -1,0 +1,186 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 12/4/2012 12:11:52 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   BookingDAO.java
+
+package com.dts.project.dao;
+
+import com.dts.core.dao.AbstractDataAccessObject;
+import com.dts.core.util.CoreHash;
+import com.dts.core.util.DateWrapper;
+import com.dts.project.model.Booking;
+import java.io.PrintStream;
+import java.sql.*;
+
+public class BookingDAO extends AbstractDataAccessObject
+{
+
+    public BookingDAO()
+    {
+        con = null;
+    }
+
+    public boolean addBooking(Booking abooking)
+    {
+        boolean flag;
+        PreparedStatement pst;
+        flag = false;
+        pst = null;
+        boolean flag1;
+        con = getConnection();
+        String insertsql = "insert into booking values(?,?,?,?)";
+        pst = con.prepareStatement(insertsql);
+        pst.setString(1, abooking.getLoginname());
+        pst.setString(2, abooking.getDoctor());
+        pst.setString(3, abooking.getAdate());
+        pst.setString(4, abooking.getTimings());
+        int n = pst.executeUpdate();
+        if(n > 0)
+            flag = true;
+        flag1 = flag;
+        try
+        {
+            pst.close();
+            con.close();
+        }
+        catch(Exception exception1) { }
+        return flag1;
+        Exception e;
+        e;
+        System.out.println((new StringBuilder("e.getMessage()")).append(e.getMessage()).toString());
+        try
+        {
+            pst.close();
+            con.close();
+        }
+        catch(Exception exception2) { }
+        break MISSING_BLOCK_LABEL_189;
+        Exception exception;
+        exception;
+        try
+        {
+            pst.close();
+            con.close();
+        }
+        catch(Exception exception3) { }
+        throw exception;
+        return flag;
+    }
+
+    public Booking viewTimings(String loginname, String adate)
+    {
+        Booking abooking;
+        abooking = null;
+        Statement st = null;
+        Connection con = null;
+        Connection con = getConnection();
+        Statement st = con.createStatement();
+        String selectsql = (new StringBuilder("select * from booking where loginname='")).append(loginname).append("' and adate=#").append(adate).append("#").toString();
+        ResultSet rs = st.executeQuery(selectsql);
+        int i = 0;
+        for(; rs.next(); abooking.setTimings(rs.getString(4)))
+        {
+            abooking = new Booking();
+            abooking.setLoginname(rs.getString(1));
+            abooking.setDoctor(rs.getString(2));
+            abooking.setAdate(rs.getString(3));
+        }
+
+        con.close();
+        return abooking;
+        Exception e;
+        e;
+        e.printStackTrace();
+        return abooking;
+    }
+
+    public Booking viewDoctorTimings(String doctorname, String adate)
+    {
+        Booking abooking;
+        abooking = null;
+        Statement st = null;
+        Connection con = null;
+        Connection con = getConnection();
+        Statement st = con.createStatement();
+        String selectsql = (new StringBuilder("select * from booking where DoctorName='")).append(doctorname).append("' and adate=#").append(adate).append("#").toString();
+        ResultSet rs = st.executeQuery(selectsql);
+        int i = 0;
+        for(; rs.next(); abooking.setTimings(rs.getString(4)))
+        {
+            abooking = new Booking();
+            abooking.setLoginname(rs.getString(1));
+            abooking.setDoctor(rs.getString(2));
+            abooking.setAdate(adate);
+        }
+
+        con.close();
+        return abooking;
+        Exception e;
+        e;
+        e.printStackTrace();
+        return abooking;
+    }
+
+    public CoreHash viewAllDoctorBookings(String doctorname)
+    {
+        CoreHash acorehash;
+        acorehash = new CoreHash();
+        Statement st = null;
+        Connection con = null;
+        System.out.println(doctorname);
+        Connection con = getConnection();
+        Statement st = con.createStatement();
+        String selectsql = (new StringBuilder("select * from booking where DoctorName='")).append(doctorname).append("'").toString();
+        ResultSet rs = st.executeQuery(selectsql);
+        int i = 0;
+        Booking abooking = null;
+        while(rs.next()) 
+        {
+            abooking = new Booking();
+            abooking.setLoginname(rs.getString(1));
+            abooking.setDoctor(rs.getString(2));
+            abooking.setAdate(DateWrapper.parseDate(rs.getDate(3)));
+            abooking.setTimings(rs.getString(4));
+            acorehash.put(new Integer(i), abooking);
+            i++;
+        }
+        con.close();
+        return acorehash;
+        Exception e;
+        e;
+        e.printStackTrace();
+        return acorehash;
+    }
+
+    public CoreHash viewBookings()
+    {
+        CoreHash acorehash;
+        acorehash = new CoreHash();
+        Statement st = null;
+        Connection con = null;
+        Connection con = getConnection();
+        Statement st = con.createStatement();
+        String selectsql = "select * from booking";
+        ResultSet rs = st.executeQuery(selectsql);
+        int i = 0;
+        Booking abooking = null;
+        while(rs.next()) 
+        {
+            abooking = new Booking();
+            abooking.setLoginname(rs.getString(1));
+            abooking.setDoctor(rs.getString(2));
+            abooking.setAdate(DateWrapper.parseDate(rs.getDate(3)));
+            abooking.setTimings(rs.getString(4));
+            acorehash.put(new Integer(i), abooking);
+            i++;
+        }
+        con.close();
+        return acorehash;
+        Exception e;
+        e;
+        e.printStackTrace();
+        return acorehash;
+    }
+
+    private Connection con;
+}
